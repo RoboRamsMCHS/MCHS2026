@@ -47,6 +47,8 @@ public class RobotContainer {
     // Run the load command only while B is held
     controller.y().toggleOnTrue(loaderSS.unload());
     // Run the unload command when Y is pressed, stop when pressed again
+    controller.a().whileTrue(aimCommand);
+    // When A is pressed, shift bot aiming over to apriltag
   }
 
   public Command getAutonomousCommand() {

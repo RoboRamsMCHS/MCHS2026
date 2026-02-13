@@ -9,6 +9,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
+import java.io.OutputStream;
+
 import edu.wpi.first.cameraserver.CameraServer;
 
 public class Robot extends TimedRobot {
@@ -47,4 +50,55 @@ public class Robot extends TimedRobot {
     }
   }
   // Cancels autonomous command when teleop starts
+
+  @Override
+  public void robotInit() {
+    new Thread(() -> {
+      // USB camera from the CameraServer
+      
+      UsbCamera camera = CameraServer.startAutomaticCapture();
+      camera.setResolution(640, 480);
+    
+      CvSink cvSink = CameraServer.getVideo();
+
+      /*  (Optional though) CV source to output process image to dashboard
+      CvSource outputStream = CameraServer.putVideo("Processed", 640, 480)
+      */
+
+      // Setup AprilTag detector and estimator
+      AprilTagDetector detector = new AprilTagDetector();
+      detector.addFamily("tag36h11", 0);    
+
+      // Pose estimator
+      AprilTagPoseEstimator.Config poseEstConfig = new AprilTagPoseEstimator.Config();
+
+      AprilTagPoseEstimator estimator = new AprilTagPoseEstimator(poseEstConfig);
+
+
+      // Mat object for image process
+      Mat image = new Mat();
+
+      while(!Thread.interrupted()) {
+        if (cvSink.grabFrame(image) == 0) {
+          // If frame is bad, skip frame
+          OutputStream.notifyError(cvSink.getError());
+          continue;
+        }
+        // Detect AprilTags
+        AprilTagDetection[] detections = detector.detect(image);
+
+        // Process detections
+
+        for (AprilTagDetection detection : detections) {
+          int id = detection.getId();
+          Transform3d pose = estimator.estimate(detection);
+        
+          NetworkTableInstance.getDefault()
+          .getTable("Vision");
+          .getEntry("tagID").setInteger(id);
+        }
+        OutputStream.putFrame(image); // Show "images" on dashboard
+      }
+    }).start();
+  }
 }
