@@ -13,33 +13,28 @@ import frc.robot.subsystems.DriveTrainSS;
 public final class Autos {
   public static Command simpleAuto1(DriveTrainSS driveTrainSS) {
     return Commands.sequence(
-        Commands.runOnce(() -> driveTrainSS.setMotorSpeeds(0.5, 0.5)),
-        Commands.waitSeconds(2),
-        Commands.runOnce(() -> driveTrainSS.setMotorSpeeds(0.0, 0.0))
+        Commands.run(() -> driveTrainSS.setMotorSpeeds(0.5, 0.5), driveTrainSS).withTimeout(2),
+        Commands.runOnce(() -> driveTrainSS.setMotorSpeeds(0.0, 0.0), driveTrainSS)
     );
   }
   // Move forward for 2 seconds
 
   public static Command simpleAuto2(DriveTrainSS driveTrainSS) {
     return Commands.sequence(
-        Commands.runOnce(() -> driveTrainSS.setMotorSpeeds(0.5, 0.5)),
-        Commands.waitSeconds(1),
-        Commands.runOnce(() -> driveTrainSS.setMotorSpeeds(0.0, 0.0)),
-        Commands.runOnce(() -> driveTrainSS.setMotorSpeeds(-0.5, 0.5)),
-        Commands.waitSeconds(1),
-        Commands.runOnce(() -> driveTrainSS.setMotorSpeeds(0.0, 0.0))
+        Commands.run(() -> driveTrainSS.setMotorSpeeds(0.5, 0.5), driveTrainSS).withTimeout(1),
+        Commands.runOnce(() -> driveTrainSS.setMotorSpeeds(0.0, 0.0), driveTrainSS),
+        Commands.run(() -> driveTrainSS.setMotorSpeeds(-0.5, 0.5), driveTrainSS).withTimeout(1),
+        Commands.runOnce(() -> driveTrainSS.setMotorSpeeds(0.0, 0.0), driveTrainSS)
     );
   }
   // Move forward for 1 second, then turn right for 1 second
 
   public static Command simpleAuto3(DriveTrainSS driveTrainSS) {
     return Commands.sequence(
-        Commands.runOnce(() -> driveTrainSS.setMotorSpeeds(0.5, 0.5)),
-        Commands.waitSeconds(1),
-        Commands.runOnce(() -> driveTrainSS.setMotorSpeeds(0.0, 0.0)),
-        Commands.runOnce(() -> driveTrainSS.setMotorSpeeds(0.5, -0.5)),
-        Commands.waitSeconds(1),
-        Commands.runOnce(() -> driveTrainSS.setMotorSpeeds(0.0, 0.0))
+        Commands.run(() -> driveTrainSS.setMotorSpeeds(0.5, 0.5), driveTrainSS).withTimeout(1),
+        Commands.runOnce(() -> driveTrainSS.setMotorSpeeds(0.0, 0.0), driveTrainSS),
+        Commands.run(() -> driveTrainSS.setMotorSpeeds(0.5, -0.5), driveTrainSS).withTimeout(1),
+        Commands.runOnce(() -> driveTrainSS.setMotorSpeeds(0.0, 0.0), driveTrainSS)
     );
   }
   // Move forward for 1 second, then turn left for 1 second
