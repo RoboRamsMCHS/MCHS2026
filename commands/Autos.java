@@ -8,6 +8,8 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.DriveTrainSS;
+import frc.robot.subsystems.ShooterSS;
+import frc.robot.subsystems.LoaderSS;
 // Import other subsystems as needed
 
 public final class Autos {
@@ -38,4 +40,20 @@ public final class Autos {
     );
   }
   // Move forward for 1 second, then turn left for 1 second
+
+  public static Command shootAuto(ShooterSS shooterSS, LoaderSS loaderSS) {
+    // Run the shooter and loader at full speed for 10 seconds, then stop
+    return Commands.sequence(
+        Commands.run(() -> {
+          System.out.println("[Auto] shootAuto: starting shooter and loader");
+          shooterSS.setShooterSpeed(1.0);
+          loaderSS.setLoaderSpeed(1.0);
+        }, shooterSS, loaderSS).withTimeout(10),
+        Commands.runOnce(() -> {
+          System.out.println("[Auto] shootAuto: stopping shooter and loader");
+          shooterSS.setShooterSpeed(0.0);
+          loaderSS.setLoaderSpeed(0.0);
+        }, shooterSS, loaderSS)
+    );
+  }
 }

@@ -47,8 +47,6 @@ public class RobotContainer {
     // Run the load command only while B is held
     controller.y().toggleOnTrue(loaderSS.unload());
     // Run the unload command when Y is pressed, stop when pressed again
-    controller.a().whileTrue(aimCommand);
-    // When A is pressed, shift bot aiming over to apriltag
   }
 
   public Command getAutonomousCommand() {
@@ -56,7 +54,7 @@ public class RobotContainer {
     if (selected != null) {
       return selected;
     }
-    return Autos.simpleAuto1(driveTrainSS);
+    return Autos.shootAuto(shooterSS, loaderSS);
     // Fallback default
   }
   // Returns the command to run in autonomous
@@ -66,6 +64,7 @@ public class RobotContainer {
     autoChooser.setDefaultOption("Simple Auto 1 (forward 2s)", Autos.simpleAuto1(driveTrainSS));
     autoChooser.addOption("Simple Auto 2 (forward 1s, turn right)", Autos.simpleAuto2(driveTrainSS));
     autoChooser.addOption("Simple Auto 3 (forward 1s, turn left)", Autos.simpleAuto3(driveTrainSS));
+  autoChooser.addOption("Shoot Auto (shoot 10s)", Autos.shootAuto(shooterSS, loaderSS));
 
     SmartDashboard.putData("Autonomous Mode", autoChooser);
   }
