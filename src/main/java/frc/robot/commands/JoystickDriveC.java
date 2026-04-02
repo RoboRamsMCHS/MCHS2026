@@ -16,6 +16,8 @@ public class JoystickDriveC extends Command {
   public JoystickDriveC(DriveTrainSS subsystem) {
     this.driveTrainSS = subsystem;
     addRequirements(subsystem);
+
+   
   }
   // Sets up the command with the required subsystem
 
