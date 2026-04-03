@@ -9,7 +9,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 public class LoaderSS extends SubsystemBase {
    private final SparkMax loader = new SparkMax(5, MotorType.kBrushless);
-  // private final TalonFX intakeMotor = new TalonFX(Constants.ShooterConstants.PLACEHOLDER); // TODO: GET CAN ID!! Set CANID in Constants.java
+  // private final TalonFX intakeMotor = new TalonFX(Constants.ShooterConstants.PLACEHOLDER);
 
   public void setLoaderSpeed(double speed) {
     loader.set(speed);
